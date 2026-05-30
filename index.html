@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A2S | Astrofa</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="css/fond.css">
+    <link rel="stylesheet" href="css/carte.css">
+    <link rel="stylesheet" href="css/glow.css">
+    <link rel="stylesheet" href="css/neon.css">
+    <link rel="stylesheet" href="css/visualiseur.css">
+
+    <style>
+        :root {
+            --primary: #ffffff;
+            --primary-glow: rgba(255, 255, 255, 0.3);
+            --secondary: #888888;
+            --bg-glass: rgba(10, 10, 15, 0.45);
+            --border-glass: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            min-height: -webkit-fill-available;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #050508 url("assets/background.jpg") center center/cover no-repeat;
+            color: white;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.8) 100%);
+            backdrop-filter: blur(8px);
+            z-index: 1;
+        }
+
+        body::after {
+            content: "";
+            position: absolute;
+            inset: -20%;
+            background:
+                radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 70% 70%, rgba(150, 150, 150, 0.05) 0%, transparent 40%);
+            animation: bgPulse 15s infinite alternate ease-in-out;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes bgPulse {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.1) translate(3%, 3%); }
+        }
+
+        #enter-screen {
+            position: fixed;
+            inset: 0;
+            background: #030305;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            cursor: pointer;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .enter-content {
+            text-align: center;
+            animation: fadeIn 1.5s ease;
+        }
+
+        #enter-screen h1 {
+            font-size: 2rem;
+            font-weight: 300;
+            letter-spacing: 4px;
+            color: #ffffff;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        #enter-screen h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 25%;
+            width: 50%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            width: 90%;
+            max-width: 1200px;
+            height: 80vh;
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--border-glass);
+            border-radius: 24px;
+            padding: 30px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.25);
+            box-shadow:
+                0 0 40px rgba(255, 255, 255, 0.1),
+                0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        .left {
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+        }
+
+        .left-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin: auto 0;
+        }
+
+        .logo {
+            width: 140px;
+            height: auto;
+            border-radius: 16px;
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.4));
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05) rotate(2deg);
+        }
+
+        .left h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            background: linear-gradient(120deg, #fff, #bbb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .discord {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 14px;
+            text-decoration: none;
+            color: black;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .discord:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
+            filter: brightness(1.1);
+        }
+
+        .center {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .pfp-container {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .pfp {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0)) padding-box,
+                        linear-gradient(135deg, var(--primary), var(--secondary)) border-box;
+            animation: float 6s infinite ease-in-out;
+            position: relative;
+            z-index: 2;
+        }
+
+        .pfp-glow {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            filter: blur(25px);
+            opacity: 0.5;
+            animation: float 6s infinite ease-in-out, pulseGlow 3s infinite alternate ease-in-out;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        @keyframes pulseGlow {
+            from { opacity: 0.3; transform: scale(0.95); }
+            to { opacity: 0.6; transform: scale(1.05); }
+        }
+
+        .name {
+            font-size: 4.5rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #ffffff 30%, #a1a1a1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 40px rgba(255, 255, 255, 0.3);
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+        }
+
+        .right {
+            justify-content: center;
+            align-items: center;
+        }
+
+        .music-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .music-box h2 {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .track-info {
+            text-align: center;
+            width: 100%;
+        }
+
+        .track {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .visualizer-container {
+            position: relative;
+            width: 100%;
+            height: 70px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 5px;
+        }
+
+        .bar {
+            width: 6px;
+            height: 8px;
+            background: linear-gradient(to top, var(--secondary), var(--primary));
+            border-radius: 3px;
+            box-shadow: 0 0 12px var(--primary-glow);
+            transition: height 0.15s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+
+        .audio-control-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(5px);
+        }
+
+        .audio-control-btn:hover {
+            background: white;
+            color: black;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        audio { display: none; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 950px) {
+            body {
+                overflow-y: auto;
+                height: auto;
+                padding: 40px 0;
+            }
+
+            .container {
+                grid-template-columns: 1fr;
+                height: auto;
+                gap: 25px;
+                width: 90%;
+                max-width: 450px;
+            }
+
+            .center {
+                grid-row: 1;
+                margin-bottom: 10px;
+            }
+
+            .name { font-size: 3.5rem; }
+            .card { padding: 25px; }
+            .left-content { margin: 15px 0; }
+            #enter-screen h1 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="enter-screen">
+        <div class="enter-content">
+            <h1>Click To Enter</h1>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="card left">
+            <div class="left-content">
+                <img src="assets/logo.png" class="logo" alt="Logo">
+                <h2>Projet Astrofa</h2>
+            </div>
+            <a href="https://discord.gg/WFGAJKMXPq" class="discord" target="_blank">
+                <i class="fab fa-discord"></i> Discord 2S
+            </a>
+        </div>
+
+        <div class="center">
+            <div class="pfp-container">
+                <img src="assets/pfp.png" class="pfp" alt="Profil">
+                <div class="pfp-glow"></div>
+            </div>
+            <div class="name">A2S</div>
+            <div class="subtitle">2S Community</div>
+        </div>
+
+        <div class="card right">
+            <div class="music-box">
+                <h2><i class="fas fa-music"></i> En écoute</h2>
+                
+                <div class="track-info">
+                    <div class="track">Maes</div>
+                    <div class="subtitle" style="font-size: 0.8rem;">Mama</div>
+                </div>
+
+                <div class="visualizer-container" id="visualizer"></div>
+
+                <button class="audio-control-btn" id="play-pause-btn">
+                    <i class="fas fa-pause"></i>
+                </button>
+
+                <audio id="music" loop>
+                    <source src="assets/music.mp4" type="audio/mp4">
+                </audio>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const enter = document.getElementById("enter-screen");
+        const music = document.getElementById("music");
+        const playPauseBtn = document.getElementById("play-pause-btn");
+        const visualizerContainer = document.getElementById("visualizer");
+        
+        const BAR_COUNT = 15;
+        const bars = [];
+        let visualizerInterval = null;
+        
+        for (let i = 0; i < BAR_COUNT; i++) {
+            const bar = document.createElement("div");
+            bar.classList.add("bar");
+            visualizerContainer.appendChild(bar);
+            bars.push(bar);
+        }
+
+        function startVisualizerAnimation() {
+            if (visualizerInterval) clearInterval(visualizerInterval);
+
+            visualizerInterval = setInterval(() => {
+                if (music.paused) return;
+
+                bars.forEach((bar, index) => {
+                    const centerFactor = 1 - Math.abs(index - BAR_COUNT / 2) / (BAR_COUNT / 2);
+                    const randomHeight = Math.floor(Math.random() * 45) + 5;
+                    const finalHeight = Math.max(8, randomHeight * (0.4 + centerFactor * 0.6));
+                    
+                    bar.style.height = `${finalHeight}px`;
+                });
+            }, 120);
+        }
+
+        function stopVisualizerAnimation() {
+            clearInterval(visualizerInterval);
+            bars.forEach(bar => {
+                bar.style.height = "8px";
+            });
+        }
+
+        enter.addEventListener("click", () => {
+            music.volume = 0.5;
+            music.play();
+            
+            startVisualizerAnimation();
+
+            enter.style.opacity = "0";
+            setTimeout(() => {
+                enter.remove();
+            }, 700);
+        });
+
+        playPauseBtn.addEventListener("click", () => {
+            if (music.paused) {
+                music.play();
+                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                startVisualizerAnimation();
+            } else {
+                music.pause();
+                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                stopVisualizerAnimation();
+            }
+        });
+    </script>
+
+</body>
+</html>
